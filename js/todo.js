@@ -1,51 +1,52 @@
-const todoForm = document.querySelector("#todo-form");
-const todoInput = document.querySelector("#todo-form input");
-const todoList = document.querySelector("#todo-list");
+const toDoForm = document.querySelector("#todo-form");
+const toDoInput = document.querySelector("#todo-form input");
+const toDoList = document.querySelector("#todo-list");
 
 const TODOS_KEY = "todos";
 let toDos = [];
 
-function handleToDoSubmit(event) {
+function handleForm(event) {
   event.preventDefault();
-  const newToDo = todoInput.value;
-  const newToDoObj = {
-    text: newToDo,
+  const userInput = toDoInput.value;
+  toDoInput.value = "";
+  const userInputObj = {
     id: Date.now(),
+    text: userInput,
   };
-
-  toDos.push(newToDoObj);
-  makeToDoList(newToDoObj);
-  todoInput.value = "";
+  toDos.push(userInputObj);
+  makeList(userInputObj);
   saveToDos();
 }
 
-function makeToDoList(newToDoObj) {
+function makeList(userInputObj) {
   const li = document.createElement("li");
-  li.id = newToDoObj.id;
+  li.id = userInputObj.id;
   const span = document.createElement("span");
+  span.innerText = userInputObj.text;
   const button = document.createElement("button");
+  button.innerText = "❌";
   li.appendChild(span);
   li.appendChild(button);
-  span.innerText = newToDoObj.text;
-  button.innerText = "❌";
-  todoList.appendChild(li);
-  button.addEventListener("click", deleteButton);
-}
-
-function deleteButton(event) {
-  const li = event.target.parentElement;
-  li.remove();
+  toDoList.appendChild(li);
+  button.addEventListener("click", deleteList);
 }
 
 function saveToDos() {
   localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));
 }
-
 const savedToDos = localStorage.getItem(TODOS_KEY);
+
 if (savedToDos) {
   const parsedToDos = JSON.parse(savedToDos);
   toDos = parsedToDos;
-  parsedToDos.forEach(makeToDoList);
+  parsedToDos.forEach(makeList);
 }
 
-todoForm.addEventListener("submit", handleToDoSubmit);
+function deleteList(event) {
+  const li = event.target.parentElement;
+  li.remove();
+  toDos = toDos.filter((item) => item.id !== parseInt(li.id));
+  saveToDos();
+}
+
+toDoForm.addEventListener("submit", handleForm);
