@@ -58,7 +58,9 @@ function addElement() {
   const bgImage = document.createElement("img");
   imgNum = Math.ceil(Math.random() * 3);
   bgImage.src = `img/${imgNum}.jpeg`;
-  document.body.prepend(bgImage); // 기준위치.prepend
+  bgImage.width = "500";
+  bgImage.height = "500";
+  document.body.appendChild(bgImage); // 기준위치.prepend
 }
 
 document.body.onload = addElement;
