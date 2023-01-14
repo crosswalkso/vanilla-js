@@ -58,8 +58,8 @@ function addElement() {
   const bgImage = document.createElement("img");
   imgNum = Math.ceil(Math.random() * 3);
   bgImage.src = `img/${imgNum}.jpeg`;
-  document.querySelector("#quote").prepend(bgImage); // 기준위치.prepend
+  document.body.prepend(bgImage); // 기준위치.prepend
 }
 
-// document.body.onload = addElement;
-document.body.addEventListener("load", addElement());
+document.body.onload = addElement;
+// document.body.addEventListener("load", addElement());
