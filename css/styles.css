@@ -1,3 +1,8 @@
 .hidden {
   display: none;
 }
+
+#quote {
+  display: flex;
+  flex-direction: column;
+}
