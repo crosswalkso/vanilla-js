@@ -3,44 +3,42 @@ const todoInput = document.querySelector("#todo-form input");
 const todoList = document.querySelector("#todo-list");
 
 const TODOS_KEY = "todos";
-const savedToDos = localStorage.getItem(TODOS_KEY);
-console.log(savedToDos);
-
-if (savedToDos) {
-  const parseToDos = JSON.parse(savedToDos);
-  console.log(parseToDos);
-  parseToDos.forEach((item) => console.log(item));
-}
+const toDos = [];
 
 function handleToDoSubmit(event) {
   event.preventDefault();
-  const todoValue = todoInput.value;
-  toDos.push(todoValue);
-  handleToDoList(todoValue);
+  const newToDo = todoInput.value;
+  toDos.push(newToDo);
+  makeToDoList(newToDo);
   todoInput.value = "";
   saveToDos();
 }
 
-function saveToDos() {
-  localStorage.setItem("todos", JSON.stringify(toDos));
+function makeToDoList(newToDo) {
+  const li = document.createElement("li");
+  const span = document.createElement("span");
+  const button = document.createElement("button");
+  li.appendChild(span);
+  li.appendChild(button);
+  span.innerText = newToDo;
+  button.innerText = "❌";
+  todoList.appendChild(li);
+  button.addEventListener("click", deleteButton);
 }
-
-const toDos = [];
 
 function deleteButton(event) {
   const li = event.target.parentElement;
   li.remove();
 }
-function handleToDoList(todoValue) {
-  const li = document.createElement("li");
-  const span = document.createElement("span");
-  const button = document.createElement("button");
-  button.innerText = "❎";
-  li.appendChild(span);
-  li.appendChild(button);
-  span.innerText = todoValue;
-  todoList.appendChild(li);
-  button.addEventListener("click", deleteButton);
+
+function saveToDos() {
+  localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));
+}
+
+const savedToDos = localStorage.getItem(TODOS_KEY);
+if (savedToDos) {
+  const parseToDos = JSON.parse(savedToDos);
+  parseToDos.forEach((item) => console.log(item));
 }
 
 todoForm.addEventListener("submit", handleToDoSubmit);
